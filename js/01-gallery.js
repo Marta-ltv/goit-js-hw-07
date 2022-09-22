@@ -5,6 +5,8 @@ const imagesMarkup = createGalleryList(galleryItems);
 
 galleryContainer.insertAdjacentHTML('beforeend', imagesMarkup);
 
+galleryContainer.addEventListener('click', onImgClick);
+
 function createGalleryList(galleryItems) {
     return galleryItems.map(({ preview, original, description }) => {
        return `<div class="gallery__item">
@@ -20,5 +22,20 @@ function createGalleryList(galleryItems) {
     }).join('');
 }
 
-console.log(imagesMarkup);
-// galleryContainer.addEventListener('click', createGalleryList);
+function onImgClick(event) {
+    event.preventDefault();
+   
+    if (!event.target.classList.contains('gallery__image')){
+        return;
+    }
+    const instance = basicLightbox.create(`<img src="${event.target.dataset.source}" width="800" height="600">`);
+    instance.show();
+    
+galleryContainer.addEventListener("keydown", onEscapeClick);
+  function onEscapeClick(event) {
+    if (event.code === "Escape") {
+      instance.close();
+    }
+  }
+}
+    
